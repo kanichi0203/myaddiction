@@ -89,20 +89,13 @@
     position: relative;
     z-index: 2;
   }
-  .container { max-width: 760px; width: 100%; text-align: center; }
+  .container { max-width: 820px; width: 100%; text-align: center; }
 
-  /* === タイトル === */
-  .title-stage {
-    min-height: 200vh;
-    position: relative;
-  }
+  .title-stage { min-height: 200vh; position: relative; }
   .title-sticky {
-    position: sticky;
-    top: 0;
+    position: sticky; top: 0;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     z-index: 5;
   }
   .title-vertical {
@@ -134,21 +127,50 @@
     color: var(--fg);
   }
 
+  /* === 章タイトル: 大型化 + 墨滴 === */
   .chapter-label {
     font-family: 'Shippori Mincho B1', serif;
-    font-size: 1rem;
-    letter-spacing: 0.5em;
-    color: var(--muted);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--fg);
     margin-bottom: 4rem;
     opacity: 0;
     transition: opacity 1.6s ease, color 1.4s ease;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 1.2rem;
   }
   .chapter-label .num {
     font-size: 0.7rem;
     letter-spacing: 0.3em;
     display: block;
-    margin-top: 0.6rem;
+    margin-top: 0.8rem;
     color: var(--muted);
+    font-weight: 400;
+  }
+  /* 墨の一筆ライン: タイトル下に手書き風で引く */
+  .chapter-label::before {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: left center;
+    width: 110%;
+    height: 18px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 20' preserveAspectRatio='none'><defs><filter id='blur'><feGaussianBlur stdDeviation='0.4'/></filter></defs><g filter='url(%23blur)' fill='%231A1614'><path d='M 8 11 C 30 8, 60 13, 95 10 S 165 7, 200 11 S 280 14, 330 10 S 380 9, 392 11 L 391 13 C 350 14, 290 11, 240 13 S 160 12, 110 13 S 40 11, 9 13 Z' opacity='0.85'/><ellipse cx='20' cy='11' rx='9' ry='3' opacity='0.6'/><ellipse cx='385' cy='11' rx='5' ry='1.2' opacity='0.5'/><circle cx='180' cy='9' r='0.8' opacity='0.35'/><circle cx='250' cy='14' r='0.6' opacity='0.3'/><circle cx='320' cy='8' r='0.5' opacity='0.25'/></g></svg>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    opacity: 0;
+    transition: opacity 1.6s ease 0.4s, transform 1.6s cubic-bezier(.4,.2,.2,1) 0.4s, filter 1.4s ease;
+  }
+  body.inverted .chapter-label::before {
+    filter: invert(1) brightness(1.1);
+  }
+  .chapter-label.in::before {
+    opacity: 0.8;
+    transform: translateX(-50%) scaleX(1);
   }
 
   .reveal {
@@ -168,57 +190,87 @@
   }
 
   .phrase {
-    font-size: clamp(1.4rem, 3.3vw, 2.4rem);
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
     font-weight: 400;
     line-height: 2.2;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     margin: 1.4rem 0;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   .phrase-large {
-    font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+    font-size: clamp(1.7rem, 4vw, 2.9rem);
     font-weight: 600;
     line-height: 1.9;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   .phrase-small {
-    font-size: clamp(0.95rem, 1.9vw, 1.3rem);
+    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
     color: var(--accent);
     letter-spacing: 0.15em;
     line-height: 2.4;
     transition: color 1.4s ease;
     font-style: italic;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
+  .pc-br { display: inline; }
+  .sp-br { display: none; }
+  @media (max-width: 640px) {
+    .pc-br { display: none; }
+    .sp-br { display: inline; }
+  }
+
+  /* === 依存リスト: SVGアイコン === */
   .dep-list-center {
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
+    gap: 1.6rem;
     margin: 2rem 0;
     text-align: center;
   }
   .dep-item-center {
-    font-size: clamp(1rem, 2.1vw, 1.4rem);
+    font-size: clamp(1rem, 2vw, 1.3rem);
     line-height: 2;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .dep-icon {
+    width: clamp(20px, 2.4vw, 28px);
+    height: clamp(20px, 2.4vw, 28px);
+    flex-shrink: 0;
+    color: var(--accent);
+    opacity: 0.7;
+    transition: color 1.4s ease;
   }
   .dep-item-center .label {
     font-weight: 600;
-    margin-right: 0.5em;
+    margin-right: 0.4em;
   }
   .dep-item-center .desc {
     color: var(--accent);
     transition: color 1.4s ease;
   }
 
-  /* ============================================
-     === 人字 === 
-     === SVG座標を修正 ===
-     左払い: (100,30) → (30,175)  これは「ノ」
-     右払い: 始点(100,100) → 終点(170,170)  これが「\」
-     回転軸 (transform-origin): 始点 (100,100)  中央上
-     - 0度 → 「\」(右下に45度)
-     - -45度反時計回り → 終点が真右に来て「―」(水平、中央から右)
-     ============================================ */
+  .dopamine-emphasis {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+    color: var(--rgb-warm);
+    margin: 2rem 0 1.5rem;
+  }
+
+  /* 人字 */
   .hito-bg {
     position: fixed;
     top: 50%;
@@ -233,12 +285,9 @@
   }
   .hito-bg.visible { opacity: 1; }
   .hito-bg.gone { opacity: 0; }
-
   .hito-svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    overflow: visible;
+    width: 100%; height: 100%;
+    display: block; overflow: visible;
   }
   .hito-svg path {
     fill: none;
@@ -257,7 +306,6 @@
       opacity 2s ease,
       filter 2s ease;
   }
-  /* 右払い: 終点(170,170)を軸に \ → ― (始点が左上から真左へ動く) */
   .hito-stroke-right {
     stroke-dasharray: 200;
     stroke-dashoffset: 200;
@@ -271,12 +319,10 @@
   }
   .hito-svg.drawn .hito-stroke-left  { stroke-dashoffset: 0; }
   .hito-svg.drawn .hito-stroke-right { stroke-dashoffset: 0; }
-
   .hito-svg.left-faded .hito-stroke-left {
     opacity: 0;
     filter: blur(4px);
   }
-  /* 水平にする: 反時計回りに-45度 */
   .hito-svg.fall-horizontal .hito-stroke-right {
     transform: rotate(-45deg);
   }
@@ -286,16 +332,7 @@
     filter: blur(3px);
   }
 
-  /* ============================================
-     === エンディング棒 ===
-     新方針: 独立した要素として、明確な座標で作る
-     SVG: 始点(170, 100) → 終点(30, 100)
-       → 水平線「―」、左端が(30,100)、右端が(170,100)
-     軸: transform-origin: 170px 100px (右端)
-     - 0度: 水平「―」
-     - +90deg時計回り: 左端が上に来る = 垂直「|」(左端が上、右端が下)
-       これが「立ち上がる」状態
-     ============================================ */
+  /* エンディング棒 */
   .ending-bar {
     position: fixed;
     top: 50%;
@@ -309,39 +346,28 @@
     transition: opacity 1.4s ease;
   }
   .ending-bar.visible { opacity: 1; }
-  .ending-bar svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    overflow: visible;
-  }
+  .ending-bar svg { width: 100%; height: 100%; display: block; overflow: visible; }
   .ending-bar path {
     fill: none;
     stroke: var(--fg);
     stroke-width: 10;
     stroke-linecap: round;
     stroke-linejoin: round;
-    transform-origin: 170px 100px; /* 右端 */
+    transform-origin: 170px 100px;
   }
-
-  /* 立ち上がり: 0度(水平) → +90度(垂直) */
   .ending-bar.standing path {
     animation: standUp 2s cubic-bezier(.55,.1,.3,1) forwards;
   }
   @keyframes standUp {
-    0%   { transform: rotate(0deg); }    /* 水平 ― */
-    20%  { transform: rotate(50deg); }   /* 持ち上がる */
-    35%  { transform: rotate(110deg); }  /* 行き過ぎてふらつき */
+    0%   { transform: rotate(0deg); }
+    20%  { transform: rotate(50deg); }
+    35%  { transform: rotate(110deg); }
     50%  { transform: rotate(75deg); }
     65%  { transform: rotate(100deg); }
     80%  { transform: rotate(85deg); }
-    100% { transform: rotate(90deg); }   /* 垂直 | */
+    100% { transform: rotate(90deg); }
   }
-  .ending-bar.standing-done path {
-    transform: rotate(90deg);
-  }
-
-  /* 左へふらふら歩く */
+  .ending-bar.standing-done path { transform: rotate(90deg); }
   .ending-bar.walking-left {
     animation: walkLeft 4s ease-in-out forwards;
   }
@@ -354,7 +380,6 @@
     100% { transform: translate(-360%, -50%); opacity: 0; }
   }
 
-  /* キャプション */
   .hito-caption {
     position: fixed;
     top: calc(50% + clamp(120px, 16vw, 200px));
@@ -375,7 +400,6 @@
   .hito-caption.visible { opacity: 0.8; }
   .hito-caption.hidden { opacity: 0; }
 
-  /* 安全圏 固定 */
   .anzen-fixed {
     position: fixed;
     top: 50%;
@@ -383,7 +407,7 @@
     transform: translate(-50%, -50%);
     font-family: 'Klee One', 'Shippori Mincho B1', serif;
     font-weight: 600;
-    font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+    font-size: clamp(1.7rem, 4vw, 2.9rem);
     color: var(--rgb-warm);
     letter-spacing: 0.08em;
     line-height: 1.9;
@@ -396,26 +420,212 @@
   }
   .anzen-fixed.visible { opacity: 1; }
   .anzen-fixed.fading { opacity: 0; filter: blur(8px); }
+  @media (max-width: 640px) {
+    .anzen-fixed { font-size: 1.4rem; }
+  }
 
-  /* 偽の締めゾーン */
-  .fake-end-anchor {
-    min-height: 180vh;
+  /* === 写真コラージュ === */
+  .collage-stage {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+  .collage-container {
+    position: absolute;
+    inset: 0;
+  }
+  .photo {
+    position: absolute;
+    background: #fff;
+    padding: 8px 8px 32px 8px;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      0 2px 6px rgba(0,0,0,0.18);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+    transition:
+      opacity 1.4s cubic-bezier(.3,.6,.3,1),
+      transform 1.4s cubic-bezier(.3,.6,.3,1.2);
+  }
+  body.inverted .photo {
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.6),
+      0 2px 6px rgba(255,255,255,0.05);
+  }
+  .photo img {
+    display: block;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .photo.show { opacity: 1; }
+  .photo-1 { top: 50%; left: 22%; width: clamp(140px, 18vw, 260px); aspect-ratio: 16/10; }
+  .photo-1.show { transform: translate(-50%, -50%) scale(1) rotate(-7deg); }
+  .photo-2 { top: 30%; left: 50%; width: clamp(150px, 20vw, 280px); aspect-ratio: 4/3; }
+  .photo-2.show { transform: translate(-50%, -50%) scale(1) rotate(4deg); }
+  .photo-3 { top: 50%; left: 78%; width: clamp(140px, 18vw, 260px); aspect-ratio: 16/10; }
+  .photo-3.show { transform: translate(-50%, -50%) scale(1) rotate(8deg); }
+  .photo-4 { top: 72%; left: 32%; width: clamp(130px, 17vw, 240px); aspect-ratio: 3/4; }
+  .photo-4.show { transform: translate(-50%, -50%) scale(1) rotate(-12deg); }
+  .photo-5 { top: 72%; left: 68%; width: clamp(140px, 18vw, 260px); aspect-ratio: 4/3; }
+  .photo-5.show { transform: translate(-50%, -50%) scale(1) rotate(6deg); }
+  .photo-6 { top: 22%; left: 25%; width: clamp(120px, 15vw, 220px); aspect-ratio: 4/3; }
+  .photo-6.show { transform: translate(-50%, -50%) scale(1) rotate(-5deg); }
+  .photo-7 { top: 22%; left: 75%; width: clamp(120px, 15vw, 220px); aspect-ratio: 16/10; }
+  .photo-7.show { transform: translate(-50%, -50%) scale(1) rotate(10deg); }
+  .photo-8 { top: 50%; left: 50%; width: clamp(135px, 17vw, 250px); aspect-ratio: 4/3; }
+  .photo-8.show { transform: translate(-50%, -50%) scale(1) rotate(-3deg); }
+  @media (max-width: 640px) {
+    .photo-1 { top: 28%; left: 26%; }
+    .photo-2 { top: 16%; left: 58%; }
+    .photo-3 { top: 48%; left: 76%; }
+    .photo-4 { top: 76%; left: 28%; }
+    .photo-5 { top: 76%; left: 72%; }
+    .photo-6 { top: 50%; left: 22%; }
+    .photo-7 { top: 16%; left: 26%; }
+    .photo-8 { top: 50%; left: 50%; }
+  }
+
+  .hero-photo {
+    width: min(80vw, 1000px);
+    aspect-ratio: 4/3;
+    background: #fff;
+    padding: 12px 12px 48px 12px;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.5),
+      0 4px 12px rgba(0,0,0,0.3);
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px) scale(0.94);
+    transition: opacity 2s ease, transform 2s cubic-bezier(.2,.6,.2,1);
+  }
+  .hero-photo.in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .hero-photo img {
+    display: block;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  /* === 依存先分散図 === */
+  .deps-stage {
+    min-height: 130vh;
     position: relative;
   }
-  .fake-end-sticky {
+  .deps-sticky {
     position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .deps-container {
+    position: relative;
+    width: min(90vw, 720px);
+    height: min(80vh, 640px);
+  }
+  .deps-self {
+    position: absolute;
     top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(70px, 9vw, 110px);
+    height: clamp(70px, 9vw, 110px);
+    border-radius: 50%;
+    background: var(--fg);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Shippori Mincho B1', serif;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+    letter-spacing: 0.15em;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 1.4s ease, background 1.4s ease, color 1.4s ease;
+    box-shadow: 0 0 40px rgba(224, 74, 56, 0.3);
+  }
+  .deps-self.in { opacity: 1; }
+  .dep-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    pointer-events: none;
+  }
+  .dep-circle {
+    width: clamp(58px, 7vw, 90px);
+    height: clamp(58px, 7vw, 90px);
+    border-radius: 50%;
+    background: var(--bg-2);
+    color: var(--fg);
+    border: 1.5px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Klee One', 'Shippori Mincho B1', serif;
+    font-weight: 600;
+    font-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    letter-spacing: 0.03em;
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 1.2s ease,
+      transform 1.2s cubic-bezier(.3,.6,.3,1.3),
+      background 1.4s ease,
+      border-color 1.4s ease,
+      color 1.4s ease;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .dep-node.lit .dep-circle {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .deps-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .deps-lines line {
+    stroke: var(--accent);
+    stroke-width: 1.2;
+    opacity: 0;
+    transition: opacity 1.4s ease, stroke 1.4s ease, stroke-dashoffset 1.4s ease;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+  }
+  .deps-lines line.lit {
+    opacity: 0.5;
+    stroke-dashoffset: 0;
+  }
+  .dep-n1 { top: 12%;  left: 28%; }
+  .dep-n2 { top: 18%;  left: 70%; }
+  .dep-n3 { top: 40%;  left: 14%; }
+  .dep-n4 { top: 38%;  left: 84%; }
+  .dep-n5 { top: 68%;  left: 20%; }
+  .dep-n6 { top: 72%;  left: 75%; }
+  .dep-n7 { top: 88%;  left: 42%; }
+  .dep-n8 { top: 90%;  left: 62%; }
+
+  .fake-end-anchor { min-height: 180vh; position: relative; }
+  .fake-end-sticky {
+    position: sticky; top: 50%;
     transform: translateY(-50%);
     text-align: center;
     z-index: 3;
     padding: 2rem;
   }
-  .fake-end-text-wrap {
-    display: inline-block;
-    position: relative;
-  }
+  .fake-end-text-wrap { display: inline-block; position: relative; }
   .fake-end-text {
-    font-size: clamp(1.8rem, 4.2vw, 2.9rem);
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
     font-weight: 600;
     display: inline-block;
     position: relative;
@@ -444,7 +654,6 @@
     color: var(--rgb-cool);
     animation: glitchCoolRGB 1.2s steps(1, end) forwards;
   }
-
   @keyframes glitchShake {
     0%   { transform: translate(0,0); clip-path: inset(0); }
     8%   { transform: translate(-3px, 1px); clip-path: inset(20% 0 60% 0); }
@@ -479,11 +688,10 @@
     85%  { transform: translate(0,0); opacity: 0.3; }
     100% { opacity: 0; }
   }
-
   .fake-end-after {
     display: none;
     font-family: 'Klee One', 'Shippori Mincho B1', serif;
-    font-size: clamp(1.6rem, 3.8vw, 2.6rem);
+    font-size: clamp(1.5rem, 3.6vw, 2.4rem);
     font-weight: 400;
     letter-spacing: 0.1em;
     line-height: 1.9;
@@ -498,7 +706,6 @@
     from { opacity: 0; transform: translateY(16px); filter: blur(8px); }
     to   { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
-
   .bow-fade {
     display: block;
     margin-top: 2.5rem;
@@ -510,7 +717,6 @@
     font-style: italic;
   }
 
-  /* グリッチ層 */
   .scanlines, .noise, .flash, .bars {
     position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 25;
   }
@@ -561,7 +767,6 @@
     80%,100% { opacity: 0; }
   }
 
-  /* 夜 */
   body.inverted .part2 .phrase,
   body.inverted .part2 .phrase-large {
     font-family: 'Klee One', 'Shippori Mincho B1', serif;
@@ -595,33 +800,36 @@
   }
 
   .close-final {
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-size: clamp(1.9rem, 4.2vw, 3.2rem);
     font-weight: 600;
     line-height: 1.7;
   }
 
-  /* === to be continued: セリフ付き英文タイポ === */
-  .tbc {
-    font-family: 'Cormorant Garamond', 'Shippori Mincho B1', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(2.6rem, 6.5vw, 5rem);
-    letter-spacing: 0.05em;
-    color: var(--fg);
-    line-height: 1.4;
+  /* === to be continued: 画像 === */
+  .tbc-image-wrap {
+    text-align: center;
     opacity: 0;
-    transition: opacity 3s ease, letter-spacing 3s ease;
+    transform: translateY(20px);
+    transition: opacity 2.4s ease, transform 2.4s ease;
   }
-  .tbc.in {
+  .tbc-image-wrap.in {
     opacity: 1;
-    letter-spacing: 0.08em;
+    transform: translateY(0);
   }
-  .tbc-dots {
-    display: inline-block;
-    opacity: 0;
-    transition: opacity 1.5s ease 1.5s;
+  .tbc-image-wrap img {
+    max-width: min(85vw, 800px);
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
-  .tbc.in .tbc-dots { opacity: 1; }
+
+  .quoted {
+    font-style: italic;
+    color: var(--accent);
+    font-size: clamp(1.4rem, 3.2vw, 2.3rem);
+    letter-spacing: 0.06em;
+    line-height: 1.9;
+  }
 
   .separator {
     width: 1px;
@@ -640,27 +848,21 @@
     color: var(--rgb-warm);
     font-weight: 600;
   }
-
 </style>
 </head>
 <body>
   <div class="frame" id="frame">依 存 と 自 立</div>
 
-  <!-- 人字: SVG座標修正版 -->
   <div class="hito-bg" id="hito-bg">
     <svg class="hito-svg" id="hito" viewBox="0 0 200 200" aria-label="人">
-      <!-- 左払い「ノ」: 上中央(100,30)から左下(30,175) -->
       <path class="hito-stroke-left" d="M 100 30 L 30 175" />
-      <!-- 右払い「\」: 中央(100,100)から右下(170,170) - これが起点 -->
       <path class="hito-stroke-right" d="M 100 100 L 170 170" />
     </svg>
   </div>
   <div class="hito-caption" id="hito-caption">支え合い</div>
 
-  <!-- 安全圏 -->
   <div class="anzen-fixed" id="anzen-fixed">「安全圏にいることへの依存」</div>
 
-  <!-- エンディング棒: 水平「―」(左30,100 から 右170,100) -->
   <div class="ending-bar" id="ending-bar">
     <svg viewBox="0 0 200 200" aria-hidden="true">
       <path d="M 30 100 L 170 100" />
@@ -694,18 +896,44 @@
   <section class="part1">
     <div class="container">
       <div class="dep-list-center">
-        <p class="dep-item-center reveal"><span class="label">酒のアルコール</span><span class="desc">抑うつ状態を緩和してくれる。</span></p>
-        <p class="dep-item-center reveal"><span class="label">コーヒーのカフェイン</span><span class="desc">憂鬱な朝にやる気を与えてくれる。</span></p>
-        <p class="dep-item-center reveal"><span class="label">YouTubeやSNS</span><span class="desc">無限に情報を摂取できる情報中毒。</span></p>
-        <p class="dep-item-center reveal"><span class="label">DiscordやSlackのコミュニティ</span><span class="desc">田舎に独りでいても、ゆるく繋がれる。</span></p>
+        <p class="dep-item-center reveal">
+          <svg class="dep-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 3v3h6V3M8 6h8l-1 13a2 2 0 01-2 2h-2a2 2 0 01-2-2L8 6z"/>
+            <line x1="10" y1="10" x2="14" y2="10" opacity="0.6"/>
+          </svg>
+          <span><span class="label">酒のアルコール</span><span class="desc">抑うつ状態を緩和してくれる。</span></span>
+        </p>
+        <p class="dep-item-center reveal">
+          <svg class="dep-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 9h13v6a4 4 0 01-4 4H8a4 4 0 01-4-4V9z"/>
+            <path d="M17 11h2a2 2 0 012 2v0a2 2 0 01-2 2h-2"/>
+            <path d="M7 4c0 1 1 1.5 1 3M11 4c0 1 1 1.5 1 3" opacity="0.7"/>
+          </svg>
+          <span><span class="label">コーヒーのカフェイン</span><span class="desc">憂鬱な朝にやる気を与えてくれる。</span></span>
+        </p>
+        <p class="dep-item-center reveal">
+          <svg class="dep-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="6" y="2" width="12" height="20" rx="2"/>
+            <line x1="11" y1="18" x2="13" y2="18"/>
+            <circle cx="12" cy="11" r="1.5" opacity="0.6"/>
+          </svg>
+          <span><span class="label">YouTubeやSNS</span><span class="desc">無限に情報を摂取できる情報中毒。</span></span>
+        </p>
+        <p class="dep-item-center reveal">
+          <svg class="dep-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+          </svg>
+          <span><span class="label">DiscordやSlackのコミュニティ</span><span class="desc">田舎に独りでいても、ゆるく繋がれる。</span></span>
+        </p>
       </div>
     </div>
   </section>
 
   <section class="part1">
     <div class="container">
+      <p class="dopamine-emphasis reveal">短絡的な<br>ドーパミン報酬。</p>
       <p class="phrase-small reveal">
-        短絡的なドーパミン報酬に傾いているところはあるけれど、<br>
+        ……傾いているところはあるけれど、<br>
         まだ健全なレベルだという認識。
       </p>
     </div>
@@ -715,7 +943,7 @@
   <section class="part1">
     <div class="container">
       <p class="chapter-label reveal">第一の依存<span class="num">支える依存</span></p>
-      <p class="phrase reveal">でも、人との深い関係を作るときに、<br>自分の癖が見えてきます。</p>
+      <p class="phrase reveal">でも、人との深い関係を作るときに、<span class="pc-br"><br></span>自分の癖が見えてきます。</p>
     </div>
   </section>
 
@@ -733,13 +961,13 @@
 
   <section class="part1" data-caption="共依存">
     <div class="container">
-      <p class="phrase reveal">傾いてしまっている二人が、<br>なんとか人の形を保っている。</p>
+      <p class="phrase reveal">傾いてしまっている二人が、<span class="pc-br"><br></span>なんとか人の形を保っている。</p>
     </div>
   </section>
 
   <section class="part1" id="hito-left-fade-section" data-caption="共依存">
     <div class="container">
-      <p class="phrase reveal">だから、寄りかかってくれる人が<br>いなくなると、</p>
+      <p class="phrase reveal">だから、寄りかかってくれる人が<span class="pc-br"><br></span>いなくなると、</p>
     </div>
   </section>
 
@@ -802,7 +1030,19 @@
 
   <section class="part1">
     <div class="container">
-      <p class="phrase reveal">自分で自分を肯定して、<br>健全な自己認識を育てる。</p>
+      <p class="phrase reveal">それが「自立」の形ではないでしょうか。</p>
+    </div>
+  </section>
+
+  <section class="part1">
+    <div class="container">
+      <p class="phrase-large reveal">自分で自分を肯定して、<br>健全な自己認識を育てる。</p>
+    </div>
+  </section>
+
+  <section class="part1">
+    <div class="container">
+      <p class="phrase reveal">これが僕の目指すべきところなのだと思います。</p>
       <div class="separator reveal"></div>
     </div>
   </section>
@@ -825,38 +1065,85 @@
   <section class="part2">
     <div class="container">
       <p class="chapter-label reveal">第二の依存<span class="num">安全圏への依存</span></p>
-      <p class="phrase reveal poetic">告白します。</p>
+      <p class="phrase reveal poetic">前に、同じようなプレゼンを<span class="pc-br"><br></span>やったときに、</p>
+      <p class="phrase reveal poetic">言われました。</p>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal poetic">友達が悩みを打ち明けてくれると、<br>嬉しい。</p>
-      <p class="phrase reveal poetic">信頼されていると感じます。</p>
+      <p class="phrase-large reveal poetic"><em class="em-warm">「プレゼンス(存在感)」</em><br>がない、と。</p>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal poetic">でも、<br>自分が打ち明けようとすると、<br>手が止まる。</p>
+      <p class="phrase-large reveal poetic">「これをあなたが発表する<br>独自性は何?」と。</p>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal poetic">「迷惑じゃないか」<br>「キモくないか」って。</p>
+      <p class="phrase reveal poetic">よく調べて、</p>
+      <p class="phrase reveal poetic">情報を揃えて、</p>
+      <p class="phrase reveal poetic">綺麗にまとめることは、<br>できる。</p>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal poetic">……同じ行為のはずなのに、<br>この非対称性がなぜかある。</p>
+      <p class="phrase-large reveal poetic">……で?</p>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal poetic">この認知が邪魔をして、<br>行動を回避している。</p>
+      <p class="phrase reveal poetic">それを<br>「岡田勘一」という、<br>あなたが発信する意味は?</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">俺は編集者という職業柄、<br>自分が「黒子」になることを<br>良しとしていました。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">裏方になったほうが、<br>矢面に立たなくて楽だから。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">意見や感想を言うのは<br>得意なんです。</p>
+      <p class="phrase reveal poetic">コミュニティに話題を投下して<br>「波紋」を起こすのも好きです。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase-large reveal poetic">でもそれは、<br>安全な場所から<br>言葉の石を投げているだけ。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">いざ自分の内面をさらけ出す<br>「自己開示」となると、<br>途端にしどろもどろになる。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">心のパンツを脱ぐような、</p>
+      <p class="phrase reveal poetic">腹を割って話すような、</p>
+      <p class="phrase reveal poetic">自分に直接ダメージが当たるのが<br>怖いんです。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">この恐怖が邪魔をして、<br>行動を回避している。</p>
       <p class="phrase reveal poetic">これが俺の、<br>もう一つの依存でした。</p>
     </div>
   </section>
@@ -864,6 +1151,25 @@
   <section class="part2" id="anzen-show-section">
     <div class="container">
       <p class="phrase-small reveal" style="opacity:0.5">─</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">だから、<br>俺の発信する言葉は、<br>どこかから「借りてきた言葉」<br>ばかりでした。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">自分自身が本当に<br>腹落ちしていない、</p>
+      <p class="phrase-large reveal poetic"><em class="em-warm">AIでも書けるような<br>綺麗に整えられた言葉。</em></p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase reveal poetic">そこには<br>生身の「プレゼンス」も、<br>泥臭さもありません。</p>
     </div>
   </section>
 
@@ -881,20 +1187,44 @@
 
   <section class="part2" id="anzen-fade-section">
     <div class="container">
-      <p class="phrase reveal poetic">対話をするときも、<br>いつの間にか傾聴側に回っていて、<br>自分の深いところの話にならないように<br>回避しています。</p>
+      <p class="phrase reveal poetic">対話をするときも、<br>いつの間にか傾聴側に回っていて、<br>自分の深いところの話に<br>ならないように回避しています。</p>
+    </div>
+  </section>
+
+  <section class="part2">
+    <div class="container">
+      <p class="phrase-large reveal poetic">でも、思い返すと――</p>
+    </div>
+  </section>
+
+  <!-- 写真コラージュ -->
+  <section class="part2 collage-stage" id="collage-section">
+    <div class="collage-container">
+      <div class="photo photo-1"><img src="assets/photos/india.jpg" alt=""></div>
+      <div class="photo photo-2"><img src="assets/photos/india1.jpg" alt=""></div>
+      <div class="photo photo-3"><img src="assets/photos/turkey.jpg" alt=""></div>
+      <div class="photo photo-4"><img src="assets/photos/france.jpg" alt=""></div>
+      <div class="photo photo-5"><img src="assets/photos/brasil.png" alt=""></div>
+      <div class="photo photo-6"><img src="assets/photos/paraguai.png" alt=""></div>
+      <div class="photo photo-7"><img src="assets/photos/uyuni.png" alt=""></div>
+      <div class="photo photo-8"><img src="assets/photos/hero_machupichu.png" alt=""></div>
     </div>
   </section>
 
   <section class="part2">
     <div class="container">
       <p class="phrase reveal poetic">世界一周の旅に出たとき、</p>
-      <p class="phrase reveal poetic">本気で楽しめた、<br>自分を楽しめたと思えたのは、</p>
+      <p class="phrase reveal poetic">本気で自分を解放して、<br>旅を楽しめたと思えたのは、</p>
     </div>
   </section>
 
-  <section class="part2">
-    <div class="container">
-      <p class="phrase-large reveal poetic">安全圏から飛び出して、<br>世界を旅する当事者として<br>没入できたから。</p>
+  <!-- 1枚大型: マチュピチュ -->
+  <section class="part2" id="hero-photo-section">
+    <div class="container" style="max-width: none;">
+      <div class="hero-photo" id="hero-photo">
+        <img src="assets/photos/hero_machupichu.png" alt="">
+      </div>
+      <p class="phrase-large reveal poetic" style="margin-top: 2rem">安全圏から飛び出して、<br>世界を旅する当事者として<br>没入できたから。</p>
     </div>
   </section>
 
@@ -971,8 +1301,8 @@
 
   <section class="part2">
     <div class="container">
-      <p class="phrase reveal reveal-slow poetic">「何がおこるかわからないから旅なんだ」</p>
-      <p class="phrase reveal reveal-slow poetic">「ゴールを決める余裕なんて今はない」</p>
+      <p class="quoted reveal reveal-slow">「何がおこるかわからないから旅なんだ」</p>
+      <p class="quoted reveal reveal-slow">「ゴールを決める余裕なんて今はない」</p>
     </div>
   </section>
 
@@ -1030,6 +1360,33 @@
     </div>
   </section>
 
+  <!-- 依存先分散図 -->
+  <div class="deps-stage" id="deps-stage">
+    <div class="deps-sticky">
+      <div class="deps-container">
+        <svg class="deps-lines" viewBox="0 0 720 640" preserveAspectRatio="none">
+          <line id="line-1" x1="360" y1="320" x2="201" y2="76"  />
+          <line id="line-2" x1="360" y1="320" x2="504" y2="115" />
+          <line id="line-3" x1="360" y1="320" x2="100" y2="256" />
+          <line id="line-4" x1="360" y1="320" x2="604" y2="243" />
+          <line id="line-5" x1="360" y1="320" x2="144" y2="435" />
+          <line id="line-6" x1="360" y1="320" x2="540" y2="460" />
+          <line id="line-7" x1="360" y1="320" x2="302" y2="563" />
+          <line id="line-8" x1="360" y1="320" x2="446" y2="576" />
+        </svg>
+        <div class="deps-self" id="deps-self">自分</div>
+        <div class="dep-node dep-n1" id="dep-1"><div class="dep-circle">家族</div></div>
+        <div class="dep-node dep-n2" id="dep-2"><div class="dep-circle">友人</div></div>
+        <div class="dep-node dep-n3" id="dep-3"><div class="dep-circle">仕事</div></div>
+        <div class="dep-node dep-n4" id="dep-4"><div class="dep-circle">コミュニティ</div></div>
+        <div class="dep-node dep-n5" id="dep-5"><div class="dep-circle">趣味</div></div>
+        <div class="dep-node dep-n6" id="dep-6"><div class="dep-circle">旅</div></div>
+        <div class="dep-node dep-n7" id="dep-7"><div class="dep-circle">SNS</div></div>
+        <div class="dep-node dep-n8" id="dep-8"><div class="dep-circle">酒</div></div>
+      </div>
+    </div>
+  </div>
+
   <section class="part2">
     <div class="container">
       <p class="phrase reveal poetic">自立って、<br>寝転がっていたら<br>できないんですよね。</p>
@@ -1051,7 +1408,7 @@
 
   <section class="part2">
     <div class="container">
-      <p class="close-final reveal">ダサくても、<br>そこから。</p>
+      <p class="close-final reveal">泥臭くても、<br>ダサくても、<br>そこから。</p>
     </div>
   </section>
 
@@ -1061,14 +1418,16 @@
     </div>
   </section>
 
-  <!-- to be continued: タイポ -->
   <section class="part2" id="tbc-section">
     <div class="container">
-      <p class="tbc" id="tbc-text">to be continued<span class="tbc-dots">…</span></p>
+      <div class="tbc-image-wrap" id="tbc-image-wrap">
+        <img src="assets/tbc.png" alt="To Be Continued">
+      </div>
     </div>
   </section>
 
 <script>
+  // reveal
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1076,6 +1435,16 @@
     });
   }, { threshold: 0.4, rootMargin: '0px 0px -10% 0px' });
   reveals.forEach(el => io.observe(el));
+
+  // 章ラベル墨滴 trigger (revealと別で確実に処理)
+  document.querySelectorAll('.chapter-label').forEach(el => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) el.classList.add('in');
+      });
+    }, { threshold: 0.5 });
+    observer.observe(el);
+  });
 
   // タイトル
   const titleStage = document.getElementById('title-stage');
@@ -1135,7 +1504,6 @@
   }, { threshold: 0.3 });
   showIO.observe(showSection);
 
-  // キャプション
   const capSections = document.querySelectorAll('[data-caption]');
   const capIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1158,7 +1526,6 @@
   }, { threshold: 0.5 });
   capSections.forEach(s => capIO.observe(s));
 
-  // ノ消える
   const leftFadeSection = document.getElementById('hito-left-fade-section');
   const leftFadeIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1167,7 +1534,6 @@
   }, { threshold: 0.4 });
   leftFadeIO.observe(leftFadeSection);
 
-  // 右払い: \ → ―
   const fallSection = document.getElementById('hito-fall-section');
   const fallIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1176,7 +1542,6 @@
   }, { threshold: 0.4 });
   fallIO.observe(fallSection);
 
-  // 消える
   const disappearSection = document.getElementById('hito-disappear-section');
   const disappearIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1211,6 +1576,56 @@
     });
   }, { threshold: 0.4 });
   anzenFadeIO.observe(anzenFadeSection);
+
+  // 写真コラージュ
+  const collageSection = document.getElementById('collage-section');
+  const photos = document.querySelectorAll('.photo');
+  let collageStarted = false;
+  const collageIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !collageStarted) {
+        collageStarted = true;
+        photos.forEach((p, i) => {
+          setTimeout(() => p.classList.add('show'), i * 220);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  collageIO.observe(collageSection);
+
+  // 大型1枚
+  const heroPhoto = document.getElementById('hero-photo');
+  const heroIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) heroPhoto.classList.add('in');
+    });
+  }, { threshold: 0.3 });
+  heroIO.observe(document.getElementById('hero-photo-section'));
+
+  // 依存先分散図
+  const depsStage = document.getElementById('deps-stage');
+  const depsSelf = document.getElementById('deps-self');
+  const depNodes = [1,2,3,4,5,6,7,8].map(n => ({
+    node: document.getElementById(`dep-${n}`),
+    line: document.getElementById(`line-${n}`)
+  }));
+
+  let depsStarted = false;
+  const depsIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !depsStarted) {
+        depsStarted = true;
+        setTimeout(() => depsSelf.classList.add('in'), 200);
+        depNodes.forEach((dep, i) => {
+          setTimeout(() => {
+            dep.node.classList.add('lit');
+            dep.line.classList.add('lit');
+          }, 900 + i * 420);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  depsIO.observe(depsStage);
 
   // bow-fade
   const fakeAnchor = document.getElementById('fake-end-anchor');
@@ -1249,9 +1664,7 @@
   const rebuildShowSection = document.getElementById('rebuild-show-section');
   const rebuildShowIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        endingBar.classList.add('visible');
-      }
+      if (entry.isIntersecting) endingBar.classList.add('visible');
     });
   }, { threshold: 0.4 });
   rebuildShowIO.observe(rebuildShowSection);
@@ -1273,20 +1686,17 @@
   const rebuildWalkSection = document.getElementById('rebuild-walk-section');
   const rebuildWalkIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        endingBar.classList.add('walking-left');
-      }
+      if (entry.isIntersecting) endingBar.classList.add('walking-left');
     });
   }, { threshold: 0.4 });
   rebuildWalkSection && rebuildWalkIO.observe(rebuildWalkSection);
 
-  // tbc
   const tbcSection = document.getElementById('tbc-section');
-  const tbcText = document.getElementById('tbc-text');
+  const tbcImageWrap = document.getElementById('tbc-image-wrap');
   const tbcIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        setTimeout(() => tbcText.classList.add('in'), 400);
+        setTimeout(() => tbcImageWrap.classList.add('in'), 400);
       }
     });
   }, { threshold: 0.4 });
