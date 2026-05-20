@@ -848,6 +848,44 @@
     color: var(--rgb-warm);
     font-weight: 600;
   }
+
+  /* === 話者紹介 === */
+  .speaker-intro {
+    text-align: center;
+  }
+  .speaker-team {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+    letter-spacing: 0.45em;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  .speaker-team .team-mark {
+    display: inline-block;
+    width: clamp(28px, 3.5vw, 42px);
+    height: 1px;
+    background: var(--accent);
+    margin: 0 1.2em;
+    vertical-align: middle;
+    opacity: 0.6;
+  }
+  .speaker-name {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: clamp(1.8rem, 4.2vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--fg);
+    line-height: 1.4;
+    margin-bottom: 0.6rem;
+  }
+  .speaker-name-sub {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: clamp(0.9rem, 1.7vw, 1.15rem);
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    font-weight: 400;
+  }
 </style>
 </head>
 <body>
@@ -884,6 +922,15 @@
       </div>
     </div>
   </div>
+
+  <!-- 話者紹介 -->
+  <section class="part1">
+    <div class="container speaker-intro">
+      <p class="speaker-team reveal"><span class="team-mark"></span>G チ ー ム<span class="team-mark"></span></p>
+      <p class="speaker-name reveal">か に ち</p>
+      <p class="speaker-name-sub reveal">岡 田 勘 一</p>
+    </div>
+  </section>
 
   <!-- 序 -->
   <section class="part1" id="cover-section">
@@ -999,7 +1046,7 @@
   <section class="part1">
     <div class="container">
       <p class="phrase reveal">誰かが困っていたり、<br>何かを求めていたら助けにいく。</p>
-      <p class="phrase reveal">もちろん相手のためにやっているのだけど、<br>それは<em class="em-warm">自分の価値を見つけるため</em>でもあったんです。</p>
+      <p class="phrase reveal">もちろん相手のためにやっているのだけど、<br>それは<em class="em-warm">自分の価値を見つけるため</em><br>でもあったんです。</p>
     </div>
   </section>
 
@@ -1042,7 +1089,7 @@
 
   <section class="part1">
     <div class="container">
-      <p class="phrase reveal">これが僕の目指すべきところなのだと思います。</p>
+      <p class="phrase reveal">これが<br>僕の目指すべきところなのだと思います。</p>
       <div class="separator reveal"></div>
     </div>
   </section>
@@ -1092,7 +1139,7 @@
 
   <section class="part2">
     <div class="container">
-      <p class="phrase-large reveal poetic">……で?</p>
+      <p class="close-final reveal">……で?</p>
     </div>
   </section>
 
@@ -1282,7 +1329,7 @@
   <section class="part2">
     <div class="container">
       <p class="phrase reveal reveal-slow poetic">なのに、<br>「自立したい」という<br>漠然とした憧れを持っています。</p>
-      <p class="phrase reveal reveal-slow poetic">精神的自立、<br>経済的自立、<br>社会的自立。</p>
+      <p class="close-final reveal">精神的自立、<br>経済的自立、<br>社会的自立。</p>
     </div>
   </section>
 
@@ -1301,7 +1348,7 @@
 
   <section class="part2">
     <div class="container">
-      <p class="quoted reveal reveal-slow">「何がおこるかわからないから旅なんだ」</p>
+      <p class="quoted reveal reveal-slow">「何が起こるかわからないから旅なんだ」</p>
       <p class="quoted reveal reveal-slow">「ゴールを決める余裕なんて今はない」</p>
     </div>
   </section>
@@ -1350,7 +1397,7 @@
 
   <section class="part2">
     <div class="container">
-      <p class="phrase-large reveal poetic">自立とは、<br>「人」という字の成り立ちのように、<br>一人だけで直立不動になることではない。</p>
+      <p class="phrase-large reveal poetic">自立とは、<br>「人」という字の成り立ちのように、<br>一人だけで<br>直立不動になることではない。</p>
     </div>
   </section>
 
